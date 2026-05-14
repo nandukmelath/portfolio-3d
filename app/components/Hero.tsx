@@ -1,11 +1,10 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
-import { useState } from "react";
-import type { Action } from "./CartoonAvatar";
+import { motion, useReducedMotion } from "framer-motion";
+import { useMemo, useState } from "react";
+import { asset } from "../lib/asset";
 
-const CartoonAvatar = dynamic(() => import("./CartoonAvatar"), { ssr: false });
+type Action = "idle" | "wave" | "code" | "thumb" | "dance";
 
 const ACTIONS: { id: Action; label: string }[] = [
   { id: "idle", label: "Idle" },
@@ -15,8 +14,45 @@ const ACTIONS: { id: Action; label: string }[] = [
   { id: "dance", label: "Friday" },
 ];
 
+function spriteAnim(action: Action, reduced: boolean) {
+  if (reduced) return { animate: { y: 0 }, transition: { duration: 0 } };
+  switch (action) {
+    case "wave":
+      return {
+        animate: { rotate: [-1.5, 1.5, -1.5], y: [0, -6, 0] },
+        transition: { duration: 1.6, repeat: Infinity, ease: "easeInOut" as const },
+      };
+    case "code":
+      return {
+        animate: { y: [0, 4, 0], scale: [1, 0.995, 1] },
+        transition: { duration: 1.8, repeat: Infinity, ease: "easeInOut" as const },
+      };
+    case "thumb":
+      return {
+        animate: { y: [0, -10, 0], rotate: [0, 2, 0] },
+        transition: { duration: 0.9, repeat: Infinity, ease: "easeOut" as const },
+      };
+    case "dance":
+      return {
+        animate: {
+          y: [0, -14, 0, -8, 0],
+          rotate: [-3, 3, -3, 3, -3],
+          skewX: [0, -2, 0, 2, 0],
+        },
+        transition: { duration: 0.85, repeat: Infinity, ease: "easeInOut" as const },
+      };
+    default:
+      return {
+        animate: { y: [0, -6, 0] },
+        transition: { duration: 4, repeat: Infinity, ease: "easeInOut" as const },
+      };
+  }
+}
+
 export default function Hero() {
   const [action, setAction] = useState<Action>("idle");
+  const reduced = useReducedMotion() ?? false;
+  const anim = useMemo(() => spriteAnim(action, reduced), [action, reduced]);
 
   return (
     <section className="relative min-h-[100svh] overflow-hidden">
@@ -92,7 +128,7 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* Right — Avatar */}
+        {/* Right — cartoon sprite */}
         <motion.div
           initial={{ opacity: 0, y: 22, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -100,15 +136,28 @@ export default function Hero() {
           className="relative z-10 col-span-12 lg:col-span-5"
         >
           <figure className="relative mx-auto w-full max-w-[460px] lg:ml-auto">
-            {/* mint glow halo */}
             <div className="pointer-events-none absolute -inset-6 rounded-[44px] bg-emerald-300/10 blur-3xl" />
-            {/* frame */}
+
             <div className="relative aspect-[4/5] w-full">
-              <div className="absolute inset-0 rounded-[36px] border border-[#1f1f22] bg-[#0c0c0d]" />
+              <div className="absolute inset-0 rounded-[36px] border border-[#1f1f22] bg-gradient-to-b from-[#0e0e10] to-[#0a0a0c]" />
+
+              {/* floor shadow */}
+              <div className="pointer-events-none absolute inset-x-12 bottom-16 h-6 rounded-[50%] bg-black/60 blur-md" />
+
               <div className="absolute inset-0 overflow-hidden rounded-[36px]">
-                <CartoonAvatar action={action} />
+                <motion.img
+                  src={asset("/cartoon-avatar.png")}
+                  alt="Nandu Kannan M — cartoon avatar"
+                  className="pointer-events-none absolute left-1/2 bottom-6 h-[90%] w-auto -translate-x-1/2 select-none drop-shadow-[0_18px_30px_rgba(0,0,0,0.55)]"
+                  draggable={false}
+                  style={{ transformOrigin: "50% 100%" }}
+                  animate={anim.animate}
+                  transition={anim.transition}
+                />
               </div>
+
               <div className="pointer-events-none absolute inset-px rounded-[35px] ring-1 ring-inset ring-white/[0.06]" />
+
               {/* Action chip bar */}
               <div className="absolute inset-x-3 bottom-3 flex flex-wrap justify-center gap-1.5 rounded-2xl border border-[#1f1f22] bg-black/55 p-1.5 backdrop-blur-md">
                 {ACTIONS.map((a) => {
@@ -131,14 +180,13 @@ export default function Hero() {
             </div>
 
             <figcaption className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">
-              <span>fig. 01 · cartoon-nandu v1</span>
+              <span>fig. 01 · cartoon-nandu</span>
               <span>tap an action ↑</span>
             </figcaption>
           </figure>
         </motion.div>
       </div>
 
-      {/* footer hint */}
       <div className="pointer-events-none absolute inset-x-0 bottom-5 flex justify-center font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-600">
         scroll
       </div>
