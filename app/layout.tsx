@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
+const serif = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  axes: ["opsz", "SOFT"],
+});
 
 export const metadata: Metadata = {
   title: "Nandu Kannan M — Microsoft Fabric Data Engineer",
@@ -33,8 +39,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full bg-[#05070d] text-slate-100 selection:bg-teal-400/30">
+    <html
+      lang="en"
+      className={`${inter.variable} ${mono.variable} ${serif.variable} h-full antialiased`}
+    >
+      <body className="min-h-full bg-[#0a0a0a] text-zinc-200 selection:bg-zinc-200 selection:text-zinc-950">
         {children}
       </body>
     </html>

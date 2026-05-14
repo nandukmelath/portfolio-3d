@@ -1,59 +1,54 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ShieldCheck } from "lucide-react";
-import { SectionTitle } from "./About";
+import { SectionLabel } from "./About";
 
 const certs = [
   {
     code: "DP-700",
     title: "Microsoft Certified: Fabric Data Engineer Associate",
     issuer: "Microsoft",
-    color: "from-teal-400/40 to-emerald-400/10",
   },
   {
     code: "PL-300",
     title: "Microsoft Certified: Power BI Data Analyst Associate",
     issuer: "Microsoft",
-    color: "from-amber-400/40 to-yellow-400/10",
   },
 ];
 
 export default function Certs() {
   return (
-    <section id="certs" className="relative py-24">
-      <div className="mx-auto max-w-6xl px-6 md:px-12">
-        <SectionTitle eyebrow="04 — Credentials" title="Microsoft certified" />
+    <section id="certs" className="relative py-28 md:py-36">
+      <div className="mx-auto grid max-w-6xl grid-cols-12 gap-10 px-6 md:px-10">
+        <aside className="col-span-12 lg:col-span-3">
+          <SectionLabel num="03" label="Credentials" />
+        </aside>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {certs.map((c, i) => (
-            <motion.div
-              key={c.code}
-              initial={{ opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.06 }}
-              className="group relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/40 p-8"
-            >
-              <div
-                className={`absolute -inset-px -z-10 bg-gradient-to-br ${c.color} opacity-60`}
-              />
-              <div className="flex items-start gap-5">
-                <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-950/80 text-teal-300 ring-1 ring-teal-400/30">
-                  <ShieldCheck className="h-7 w-7" />
-                </div>
-                <div>
-                  <div className="text-3xl font-bold tracking-tight text-slate-100">
+        <div className="col-span-12 lg:col-span-9">
+          <ul className="divide-y divide-[#1f1f22]">
+            {certs.map((c, i) => (
+              <motion.li
+                key={c.code}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.45, delay: i * 0.05 }}
+                className="grid grid-cols-12 gap-6 py-7"
+              >
+                <div className="col-span-12 md:col-span-3">
+                  <div className="font-serif text-3xl tracking-tight text-zinc-50">
                     {c.code}
                   </div>
-                  <div className="mt-1 text-slate-300">{c.title}</div>
-                  <div className="mt-2 text-xs uppercase tracking-[0.2em] text-slate-500">
+                  <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-500">
                     {c.issuer}
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+                <div className="col-span-12 self-center text-zinc-300 md:col-span-9">
+                  {c.title}
+                </div>
+              </motion.li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

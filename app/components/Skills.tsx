@@ -1,12 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SectionTitle } from "./About";
+import { SectionLabel } from "./About";
 
-const groups = [
+const groups: { title: string; items: string[] }[] = [
   {
     title: "Microsoft Fabric",
-    color: "text-teal-300",
     items: [
       "OneLake",
       "Lakehouse",
@@ -15,101 +14,98 @@ const groups = [
       "Data Pipelines",
       "Notebooks",
       "Real-Time Analytics",
-      "Medallion (Bronze/Silver/Gold)",
+      "Medallion",
     ],
   },
   {
-    title: "Data Engineering",
-    color: "text-amber-300",
+    title: "Data engineering",
     items: [
       "PySpark",
       "Delta Lake",
       "Spark SQL",
-      "Apache Spark",
       "ETL / ELT",
-      "Data Modelling",
-      "Star Schema",
-      "Performance Tuning",
+      "Data modelling",
+      "Star schema",
+      "Performance tuning",
     ],
   },
   {
     title: "Azure",
-    color: "text-sky-300",
     items: [
       "Azure Data Factory",
       "ADLS Gen2",
       "Synapse",
-      "Azure DevOps",
-      "CI/CD",
-      "Microsoft Azure",
+      "DevOps",
+      "CI / CD",
     ],
   },
   {
-    title: "BI & Analytics",
-    color: "text-rose-300",
+    title: "Analytics",
     items: [
       "Power BI",
       "DAX",
-      "Power BI Semantic Models",
+      "Semantic models",
       "Row-Level Security",
-      "Business Intelligence",
-      "Data Warehousing",
+      "Warehousing",
     ],
   },
   {
     title: "Languages",
-    color: "text-violet-300",
-    items: ["Python", "SQL", "T-SQL", "Git", "Alteryx (migration)"],
+    items: ["Python", "SQL", "T-SQL", "Git", "Alteryx (legacy)"],
   },
   {
     title: "AI (side hobby)",
-    color: "text-fuchsia-300",
     items: [
-      "AI Agents",
-      "Agentic AI",
-      "Multi-Agent Systems",
-      "LangChain",
+      "Multi-agent systems",
       "LangGraph",
-      "LLM Engineering",
+      "LangChain",
+      "LLM engineering",
       "RAG",
-      "Generative AI",
     ],
   },
 ];
 
 export default function Skills() {
   return (
-    <section id="skills" className="relative py-24">
-      <div className="mx-auto max-w-6xl px-6 md:px-12">
-        <SectionTitle eyebrow="03 — Stack" title="What I build with" />
+    <section id="stack" className="relative py-28 md:py-36">
+      <div className="mx-auto grid max-w-6xl grid-cols-12 gap-10 px-6 md:px-10">
+        <aside className="col-span-12 lg:col-span-3">
+          <SectionLabel num="02" label="Stack" />
+        </aside>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {groups.map((g, i) => (
-            <motion.div
-              key={g.title}
-              initial={{ opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.05 }}
-              className="glass rounded-2xl p-6"
-            >
-              <div
-                className={`text-xs uppercase tracking-[0.2em] ${g.color}`}
+        <div className="col-span-12 lg:col-span-9">
+          <dl className="divide-y divide-[#1f1f22]">
+            {groups.map((g, i) => (
+              <motion.div
+                key={g.title}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.45, delay: i * 0.04 }}
+                className="grid grid-cols-12 gap-6 py-6"
               >
-                {g.title}
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {g.items.map((it) => (
-                  <span
-                    key={it}
-                    className="rounded-full border border-slate-700/80 bg-slate-900/60 px-3 py-1 text-xs text-slate-300"
-                  >
-                    {it}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+                <dt className="col-span-12 font-serif text-lg text-zinc-100 md:col-span-3">
+                  {g.title}
+                </dt>
+                <dd className="col-span-12 md:col-span-9">
+                  <ul className="flex flex-wrap gap-x-5 gap-y-2 text-[14px] text-zinc-400">
+                    {g.items.map((it, idx) => (
+                      <li
+                        key={it}
+                        className={
+                          idx === 0
+                            ? ""
+                            : "before:mr-5 before:text-zinc-700 before:content-['·']"
+                        }
+                      >
+                        {it}
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </motion.div>
+            ))}
+          </dl>
         </div>
       </div>
     </section>

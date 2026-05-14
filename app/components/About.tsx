@@ -1,130 +1,89 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Building2, GraduationCap, MapPin, BadgeCheck } from "lucide-react";
 
 export default function About() {
   return (
-    <section id="about" className="relative py-24">
-      <div className="mx-auto max-w-6xl px-6 md:px-12">
-        <SectionTitle eyebrow="01 — Profile" title="The short version" />
+    <section id="about" className="relative py-28 md:py-36">
+      <div className="mx-auto grid max-w-6xl grid-cols-12 gap-10 px-6 md:px-10">
+        <motion.aside
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5 }}
+          className="col-span-12 lg:col-span-3"
+        >
+          <SectionLabel num="00" label="Profile" />
+        </motion.aside>
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-5">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-3"
-          >
-            <p className="text-lg leading-relaxed text-slate-300">
-              Microsoft Fabric Data Engineer at{" "}
-              <span className="text-teal-300">TCS</span> with 2+ years building
-              cloud-native data platforms for global banking and asset
-              management clients. I take Alteryx-heavy, legacy BI estates and
-              turn them into governed Fabric Lakehouses that power real-time
-              executive reporting.
-            </p>
-            <p className="mt-4 text-lg leading-relaxed text-slate-300">
-              Sole owner of an Alteryx → Microsoft Fabric migration from POC to
-              production — delivered{" "}
-              <span className="text-amber-300">~£70K annual savings</span> and
-              cut a 3-day pipeline cycle to under 6 hours.
-            </p>
-            <p className="mt-4 text-lg leading-relaxed text-slate-300">
-              Outside the day job, I build multi-agent AI systems —{" "}
-              <span className="text-teal-300">Kavach</span> (a DPDP compliance
-              co-pilot) and autonomous-agent experiments for income-stream
-              automation. The same agentic lens shows up in how I design modern
-              data platforms.
-            </p>
-          </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, delay: 0.08 }}
+          className="col-span-12 lg:col-span-9"
+        >
+          <p className="font-serif text-2xl leading-[1.4] tracking-tight text-zinc-100 md:text-[28px] md:leading-[1.35]">
+            I&apos;ve spent the last two years inside global banking and asset
+            management estates — the kind where an Alteryx workflow is older
+            than the analyst running it. My job is to rebuild that on Microsoft
+            Fabric without breaking the report it&apos;s currently feeding.
+          </p>
 
-          <motion.aside
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="lg:col-span-2"
-          >
-            <div className="glass rounded-2xl p-6">
-              <ul className="space-y-4 text-sm">
-                <Row
-                  icon={<Building2 className="h-4 w-4" />}
-                  label="Now"
-                  value="Analytics Engineer, TCS · Jul 2024 – Present"
-                />
-                <Row
-                  icon={<MapPin className="h-4 w-4" />}
-                  label="Based"
-                  value="Bengaluru, India · Open to Remote"
-                />
-                <Row
-                  icon={<BadgeCheck className="h-4 w-4" />}
-                  label="Certified"
-                  value="DP-700 · PL-300"
-                />
-                <Row
-                  icon={<GraduationCap className="h-4 w-4" />}
-                  label="Education"
-                  value="B.Tech ECE, CUSAT · 2020 – 2024"
-                />
-              </ul>
-              <div className="mt-6 rounded-xl border border-teal-400/20 bg-teal-400/5 p-4 text-xs leading-relaxed text-teal-200">
-                <span className="font-semibold uppercase tracking-[0.18em]">
-                  Recognitions
-                </span>
-                <div className="mt-2 text-slate-300">
-                  TCS Top Performer (2025) · Rising Star (2024)
-                </div>
-              </div>
-            </div>
-          </motion.aside>
-        </div>
+          <div className="mt-10 grid grid-cols-1 gap-x-12 gap-y-6 text-[15px] leading-relaxed text-zinc-400 md:grid-cols-2">
+            <p>
+              At TCS I led an Alteryx → Fabric migration end-to-end — POC
+              through production, sole owner. Bronze, Silver, Gold in OneLake;
+              PySpark notebooks processing 10M+ rows a day; Power BI semantic
+              models the C-suite can read without a briefing. ~£70K annual
+              savings, pipeline cycle cut from three days to under six hours.
+            </p>
+            <p>
+              Outside work I build multi-agent AI systems. The most useful one,{" "}
+              <span className="text-zinc-200">Kavach</span>, is a DPDP
+              compliance co-pilot that hands tasks between specialist agents and
+              a reviewer agent. The agentic lens shows up in how I design data
+              platforms — tools, contracts, handoffs.
+            </p>
+          </div>
+
+          <dl className="mt-12 grid grid-cols-2 gap-y-3 border-t border-[#1f1f22] pt-6 font-mono text-[12px] md:grid-cols-4">
+            <Row label="Now" value="Analytics Engineer · TCS · Jul 2024 –" />
+            <Row label="Based" value="Bengaluru, IN" />
+            <Row label="Education" value="B.Tech ECE · CUSAT · 2020 – 24" />
+            <Row label="Recognised" value="TCS Top Performer 2025" />
+          </dl>
+        </motion.div>
       </div>
     </section>
   );
 }
 
-function Row({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-}) {
+function Row({ label, value }: { label: string; value: string }) {
   return (
-    <li className="flex items-start gap-3">
-      <span className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-teal-400/10 text-teal-300">
-        {icon}
-      </span>
-      <div>
-        <div className="text-[10px] uppercase tracking-[0.2em] text-slate-500">
-          {label}
-        </div>
-        <div className="text-slate-200">{value}</div>
-      </div>
-    </li>
+    <div>
+      <dt className="text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+        {label}
+      </dt>
+      <dd className="mt-1 text-zinc-300">{value}</dd>
+    </div>
   );
 }
 
-export function SectionTitle({
-  eyebrow,
-  title,
+export function SectionLabel({
+  num,
+  label,
 }: {
-  eyebrow: string;
-  title: string;
+  num: string;
+  label: string;
 }) {
   return (
-    <div>
-      <div className="text-xs uppercase tracking-[0.3em] text-teal-300">
-        {eyebrow}
+    <div className="sticky top-24 hidden flex-col gap-3 font-mono text-[11px] uppercase tracking-[0.22em] lg:flex">
+      <div className="flex items-center gap-3 text-zinc-500">
+        <span className="text-emerald-300">{num}</span>
+        <span className="h-px w-12 bg-[#2a2a2e]" />
       </div>
-      <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">
-        {title}
-      </h2>
+      <div className="text-zinc-300">{label}</div>
     </div>
   );
 }

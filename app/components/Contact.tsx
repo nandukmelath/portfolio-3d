@@ -1,92 +1,72 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin } from "lucide-react";
-import { LinkedinIcon as Linkedin, GithubIcon as Github } from "./BrandIcons";
-import { SectionTitle } from "./About";
+import { SectionLabel } from "./About";
+
+const channels = [
+  { label: "Email", value: "nandukannanmelath@gmail.com", href: "mailto:nandukannanmelath@gmail.com" },
+  { label: "Phone", value: "+91 7012293229", href: "tel:+917012293229" },
+  { label: "LinkedIn", value: "linkedin.com/in/nandukannanm", href: "https://www.linkedin.com/in/nandukannanm/" },
+  { label: "GitHub", value: "github.com/nandukmelath", href: "https://github.com/nandukmelath" },
+];
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative py-24">
-      <div className="mx-auto max-w-6xl px-6 md:px-12">
-        <SectionTitle eyebrow="05 — Reach out" title="Let's talk Fabric" />
+    <section id="contact" className="relative pt-28 pb-20 md:pt-36">
+      <div className="mx-auto grid max-w-6xl grid-cols-12 gap-10 px-6 md:px-10">
+        <aside className="col-span-12 lg:col-span-3">
+          <SectionLabel num="04" label="Contact" />
+        </aside>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.55 }}
-          className="mt-10 grid gap-4 md:grid-cols-2"
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6 }}
+          className="col-span-12 lg:col-span-9"
         >
-          <ContactCard
-            icon={<Mail className="h-5 w-5" />}
-            label="Email"
-            value="nandukannanmelath@gmail.com"
-            href="mailto:nandukannanmelath@gmail.com"
-          />
-          <ContactCard
-            icon={<Phone className="h-5 w-5" />}
-            label="Phone"
-            value="+91 7012293229"
-            href="tel:+917012293229"
-          />
-          <ContactCard
-            icon={<Linkedin className="h-5 w-5" />}
-            label="LinkedIn"
-            value="linkedin.com/in/nandukannanm"
-            href="https://www.linkedin.com/in/nandukannanm/"
-          />
-          <ContactCard
-            icon={<Github className="h-5 w-5" />}
-            label="GitHub"
-            value="github.com/nandukmelath"
-            href="https://github.com/nandukmelath"
-          />
-        </motion.div>
+          <h2 className="max-w-2xl font-serif text-4xl leading-[1.1] tracking-tight text-zinc-50 md:text-5xl">
+            Looking for someone who can{" "}
+            <em className="not-italic text-emerald-200/90">
+              own a Fabric build end-to-end?
+            </em>{" "}
+            That&apos;s the job.
+          </h2>
+          <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-zinc-400">
+            Currently open to Microsoft Fabric DE, Analytics Engineer, and
+            Azure DE roles in Bengaluru or fully remote. Notice ≤ 30 days. India
+            and international onsite client travel is fine.
+          </p>
 
-        <div className="mt-12 flex flex-col items-center gap-2 text-xs uppercase tracking-[0.22em] text-slate-500">
-          <div className="inline-flex items-center gap-2">
-            <MapPin className="h-3.5 w-3.5" /> Bengaluru, India · Notice ≤ 30 days
-          </div>
-          <div className="mt-2 text-slate-600">
-            © {new Date().getFullYear()} Nandu Kannan M. Built with Next.js,
-            React Three Fiber, and Tailwind.
-          </div>
-        </div>
+          <ul className="mt-12 divide-y divide-[#1f1f22] border-y border-[#1f1f22]">
+            {channels.map((c) => (
+              <li key={c.label}>
+                <a
+                  href={c.href}
+                  target={c.href.startsWith("http") ? "_blank" : undefined}
+                  rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="group flex items-center justify-between py-5 transition hover:pl-2"
+                >
+                  <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500">
+                    {c.label}
+                  </span>
+                  <span className="flex items-center gap-3 text-zinc-200">
+                    <span className="underline-soft">{c.value}</span>
+                    <span className="font-mono text-emerald-300 transition-transform group-hover:translate-x-1">
+                      →
+                    </span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <footer className="mt-16 flex flex-col items-start justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-600 md:flex-row md:items-center">
+            <span>© {new Date().getFullYear()} Nandu Kannan M</span>
+            <span>Built · Next.js · R3F · Tailwind</span>
+          </footer>
+        </motion.div>
       </div>
     </section>
-  );
-}
-
-function ContactCard({
-  icon,
-  label,
-  value,
-  href,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  href: string;
-}) {
-  return (
-    <a
-      href={href}
-      target={href.startsWith("http") ? "_blank" : undefined}
-      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-      className="group flex items-center gap-4 rounded-2xl border border-slate-800 bg-slate-900/40 p-5 transition hover:border-teal-400/40 hover:bg-slate-900/70"
-    >
-      <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-teal-400/10 text-teal-300">
-        {icon}
-      </span>
-      <div className="min-w-0 flex-1">
-        <div className="text-[10px] uppercase tracking-[0.22em] text-slate-500">
-          {label}
-        </div>
-        <div className="truncate text-slate-200 group-hover:text-teal-300">
-          {value}
-        </div>
-      </div>
-    </a>
   );
 }

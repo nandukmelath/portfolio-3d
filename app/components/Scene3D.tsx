@@ -2,180 +2,133 @@
 
 import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  Float,
-  OrbitControls,
-  Sparkles,
-  Stars,
-  Text,
-  TorusKnot,
-  Environment,
-  MeshDistortMaterial,
-} from "@react-three/drei";
 import * as THREE from "three";
 
-function MedallionLayer({
-  y,
-  color,
-  label,
+function Ring({
+  radius,
   speed,
-  size,
+  axisTilt,
+  color,
+  opacity,
 }: {
-  y: number;
-  color: string;
-  label: string;
+  radius: number;
   speed: number;
-  size: number;
+  axisTilt: number;
+  color: string;
+  opacity: number;
 }) {
   const ref = useRef<THREE.Mesh>(null!);
   useFrame((state) => {
+    ref.current.rotation.z = state.clock.elapsedTime * speed;
+  });
+  return (
+    <mesh ref={ref} rotation={[axisTilt, 0, 0]}>
+      <torusGeometry args={[radius, 0.006, 24, 220]} />
+      <meshBasicMaterial
+        color={color}
+        transparent
+        opacity={opacity}
+        toneMapped={false}
+      />
+    </mesh>
+  );
+}
+
+function ParticleField() {
+  const ref = useRef<THREE.Points>(null!);
+  const geom = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    const count = 320;
+    const pos = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const r = 1.4 + Math.random() * 1.8;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      pos[i * 3 + 0] = r * Math.sin(phi) * Math.cos(theta);
+      pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      pos[i * 3 + 2] = r * Math.cos(phi);
+    }
+    g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    return g;
+  }, []);
+  useFrame((state) => {
     const t = state.clock.elapsedTime;
-    ref.current.rotation.y = t * speed;
-    ref.current.position.y = y + Math.sin(t * 0.8 + y) * 0.08;
+    ref.current.rotation.y = t * 0.04;
+    ref.current.rotation.x = Math.sin(t * 0.1) * 0.1;
+  });
+  return (
+    <points ref={ref} geometry={geom}>
+      <pointsMaterial
+        size={0.012}
+        color="#9ca3af"
+        sizeAttenuation
+        transparent
+        opacity={0.55}
+        depthWrite={false}
+      />
+    </points>
+  );
+}
+
+function Core() {
+  const ref = useRef<THREE.Mesh>(null!);
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    ref.current.rotation.x = t * 0.18;
+    ref.current.rotation.y = t * 0.24;
   });
   return (
     <group>
-      <mesh ref={ref} castShadow>
-        <torusGeometry args={[size, 0.08, 24, 96]} />
+      <mesh ref={ref}>
+        <icosahedronGeometry args={[0.7, 1]} />
+        <meshBasicMaterial color="#1c1c1f" wireframe transparent opacity={0.9} />
+      </mesh>
+      <mesh>
+        <icosahedronGeometry args={[0.68, 1]} />
         <meshStandardMaterial
-          color={color}
-          emissive={color}
-          emissiveIntensity={0.45}
-          metalness={0.9}
-          roughness={0.2}
+          color="#0a0a0a"
+          emissive="#6ee7b7"
+          emissiveIntensity={0.08}
+          roughness={0.4}
+          metalness={0.6}
         />
       </mesh>
-      <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.6}>
-        <Text
-          position={[size + 0.6, y, 0]}
-          fontSize={0.22}
-          color={color}
-          anchorX="left"
-          anchorY="middle"
-        >
-          {label}
-        </Text>
-      </Float>
     </group>
   );
 }
 
-function CoreOrb() {
-  const ref = useRef<THREE.Mesh>(null!);
+function Scene() {
+  const group = useRef<THREE.Group>(null!);
   useFrame((state) => {
     const t = state.clock.elapsedTime;
-    ref.current.rotation.x = t * 0.25;
-    ref.current.rotation.y = t * 0.35;
-  });
-  return (
-    <mesh ref={ref}>
-      <icosahedronGeometry args={[0.55, 2]} />
-      <MeshDistortMaterial
-        color="#14b8a6"
-        emissive="#0ea5a3"
-        emissiveIntensity={0.7}
-        speed={2}
-        distort={0.35}
-        metalness={0.6}
-        roughness={0.15}
-      />
-    </mesh>
-  );
-}
-
-function DataParticles() {
-  const points = useMemo(() => {
-    const arr: [number, number, number][] = [];
-    for (let i = 0; i < 280; i++) {
-      const r = 2.2 + Math.random() * 1.6;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      arr.push([
-        r * Math.sin(phi) * Math.cos(theta),
-        r * Math.sin(phi) * Math.sin(theta) - 0.4,
-        r * Math.cos(phi),
-      ]);
+    if (group.current) {
+      group.current.rotation.y = t * 0.06;
+      group.current.position.y = Math.sin(t * 0.4) * 0.05;
     }
-    return arr;
-  }, []);
-  const ref = useRef<THREE.Group>(null!);
-  useFrame((state) => {
-    ref.current.rotation.y = state.clock.elapsedTime * 0.05;
   });
   return (
-    <group ref={ref}>
-      {points.map((p, i) => (
-        <mesh key={i} position={p}>
-          <sphereGeometry args={[0.018, 8, 8]} />
-          <meshBasicMaterial color={i % 3 === 0 ? "#14b8a6" : i % 3 === 1 ? "#d4af37" : "#94a3b8"} />
-        </mesh>
-      ))}
+    <group ref={group}>
+      <Core />
+      <Ring radius={1.15} speed={0.18} axisTilt={1.1} color="#6ee7b7" opacity={0.45} />
+      <Ring radius={1.55} speed={-0.12} axisTilt={0.4} color="#e7e5e4" opacity={0.22} />
+      <Ring radius={1.95} speed={0.08} axisTilt={-0.9} color="#e7e5e4" opacity={0.12} />
+      <ParticleField />
     </group>
-  );
-}
-
-function OrbitalRing() {
-  const ref = useRef<THREE.Mesh>(null!);
-  useFrame((state) => {
-    ref.current.rotation.z = state.clock.elapsedTime * 0.1;
-    ref.current.rotation.x = Math.PI / 2.3;
-  });
-  return (
-    <mesh ref={ref}>
-      <TorusKnot args={[1.6, 0.04, 200, 16, 2, 5]} />
-      <meshStandardMaterial
-        color="#14b8a6"
-        emissive="#14b8a6"
-        emissiveIntensity={0.4}
-        metalness={0.8}
-        roughness={0.3}
-        transparent
-        opacity={0.55}
-      />
-    </mesh>
   );
 }
 
 export default function Scene3D() {
   return (
     <Canvas
-      camera={{ position: [0, 0.4, 5.5], fov: 50 }}
+      camera={{ position: [0, 0, 4.6], fov: 38 }}
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true }}
     >
-      <color attach="background" args={["#05070d"]} />
-      <fog attach="fog" args={["#05070d", 7, 14]} />
-
-      <ambientLight intensity={0.35} />
-      <pointLight position={[5, 5, 5]} intensity={1.2} color="#14b8a6" />
-      <pointLight position={[-4, -3, -2]} intensity={0.6} color="#d4af37" />
-
+      <ambientLight intensity={0.4} />
+      <pointLight position={[3, 3, 3]} intensity={0.6} color="#ffffff" />
       <Suspense fallback={null}>
-        <Stars radius={60} depth={30} count={2500} factor={3} fade speed={1} />
-        <Sparkles count={50} scale={6} size={2} color="#14b8a6" />
-
-        <Float speed={0.8} rotationIntensity={0.3} floatIntensity={0.5}>
-          <CoreOrb />
-        </Float>
-
-        <MedallionLayer y={1.5} color="#d4af37" label="Gold" speed={0.4} size={1.6} />
-        <MedallionLayer y={0} color="#c0c0c0" label="Silver" speed={-0.3} size={2.0} />
-        <MedallionLayer y={-1.5} color="#b87333" label="Bronze" speed={0.35} size={2.4} />
-
-        <OrbitalRing />
-        <DataParticles />
-
-        <Environment preset="night" />
+        <Scene />
       </Suspense>
-
-      <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        autoRotate
-        autoRotateSpeed={0.6}
-        minPolarAngle={Math.PI / 2.6}
-        maxPolarAngle={Math.PI / 1.7}
-      />
     </Canvas>
   );
 }
