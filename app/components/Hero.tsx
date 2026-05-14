@@ -78,39 +78,27 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* Right — cartoon sprite (static, professional) */}
+        {/* Right — cartoon sprite, blended into page */}
         <motion.div
-          initial={{ opacity: 0, y: 22, scale: 0.97 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.2, 0.7, 0.2, 1] }}
           className="relative z-10 col-span-12 lg:col-span-5"
         >
-          <figure className="relative mx-auto w-full max-w-[460px] lg:ml-auto">
-            <div className="pointer-events-none absolute -inset-6 rounded-[44px] bg-emerald-300/10 blur-3xl" />
+          <div className="relative mx-auto w-full max-w-[420px] lg:ml-auto">
+            {/* soft mint wash behind figure, blends into hero bg */}
+            <div className="pointer-events-none absolute left-1/2 top-[18%] h-[55%] w-[80%] -translate-x-1/2 rounded-[50%] bg-emerald-300/[0.07] blur-3xl" />
 
-            <div className="relative aspect-[4/5] w-full">
-              <div className="absolute inset-0 rounded-[36px] border border-[#1f1f22] bg-gradient-to-b from-[#0e0e10] to-[#0a0a0c]" />
+            {/* grounding shadow */}
+            <div className="pointer-events-none absolute inset-x-12 bottom-[6%] h-4 rounded-[50%] bg-black/55 blur-md" />
 
-              {/* floor shadow */}
-              <div className="pointer-events-none absolute inset-x-16 bottom-12 h-5 rounded-[50%] bg-black/55 blur-md" />
-
-              <div className="absolute inset-0 overflow-hidden rounded-[36px]">
-                <img
-                  src={asset("/cartoon-avatar.png")}
-                  alt="Nandu Kannan M"
-                  className="pointer-events-none absolute left-1/2 bottom-6 h-[92%] w-auto -translate-x-1/2 select-none drop-shadow-[0_18px_30px_rgba(0,0,0,0.55)]"
-                  draggable={false}
-                />
-              </div>
-
-              <div className="pointer-events-none absolute inset-px rounded-[35px] ring-1 ring-inset ring-white/[0.06]" />
-            </div>
-
-            <figcaption className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">
-              <span>Nandu Kannan M</span>
-              <span>Bengaluru, IN</span>
-            </figcaption>
-          </figure>
+            <img
+              src={asset("/cartoon-avatar.png")}
+              alt="Nandu Kannan M"
+              className="pointer-events-none relative block h-auto w-full select-none drop-shadow-[0_24px_40px_rgba(0,0,0,0.55)]"
+              draggable={false}
+            />
+          </div>
         </motion.div>
       </div>
 
