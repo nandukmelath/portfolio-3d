@@ -55,8 +55,8 @@ function Head({ tex }: { tex: THREE.Texture }) {
       </mesh>
 
       {/* face billboard — pushed clearly in front of skull */}
-      <mesh position={[0, 0.0, 0.42]} renderOrder={2}>
-        <planeGeometry args={[0.7, 0.7]} />
+      <mesh position={[0, 0.02, 0.43]} renderOrder={2}>
+        <planeGeometry args={[0.56, 0.56]} />
         <meshBasicMaterial
           map={tex}
           transparent
@@ -278,7 +278,7 @@ function Avatar({ action }: { action: Action }) {
     }
 
     if (root.current) {
-      root.current.position.y = pose.yOffset - 0.45;
+      root.current.position.y = pose.yOffset - 0.7;
       root.current.rotation.y = pose.bodyRot + state.pointer.x * 0.12;
     }
   });
@@ -307,10 +307,10 @@ function Avatar({ action }: { action: Action }) {
 export default function CartoonAvatar({ action }: { action: Action }) {
   return (
     <Canvas
-      camera={{ position: [0, 0.9, 4.2], fov: 32 }}
+      camera={{ position: [0, 0.5, 5.6], fov: 30 }}
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true }}
-      onCreated={({ camera }) => camera.lookAt(0, 0.9, 0)}
+      onCreated={({ camera }) => camera.lookAt(0, 0.4, 0)}
     >
       <color attach="background" args={["#0c0c0d"]} />
       <ambientLight intensity={0.65} />
