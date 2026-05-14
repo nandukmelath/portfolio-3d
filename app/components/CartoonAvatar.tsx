@@ -42,45 +42,41 @@ function CapsuleLimb({
 function Head({ tex }: { tex: THREE.Texture }) {
   return (
     <group position={[0, 1.55, 0]}>
-      {/* head sphere */}
-      <mesh castShadow>
-        <sphereGeometry args={[0.42, 32, 32]} />
+      {/* skull base — slightly larger than face plane, behind face */}
+      <mesh castShadow position={[0, 0, -0.05]}>
+        <sphereGeometry args={[0.44, 32, 32]} />
         <meshToonMaterial color={SKIN} />
       </mesh>
-      {/* hair cap — squished sphere on top + back */}
-      <mesh position={[0, 0.16, -0.04]} scale={[1.02, 0.7, 1.02]}>
-        <sphereGeometry args={[0.42, 32, 32]} />
-        <meshToonMaterial color={HAIR} />
-      </mesh>
-      {/* small fringe — front lift */}
-      <mesh position={[0, 0.22, 0.28]} rotation={[0.4, 0, 0]} scale={[0.6, 0.3, 0.45]}>
-        <sphereGeometry args={[0.42, 16, 16]} />
-        <meshToonMaterial color={HAIR} />
-      </mesh>
-      {/* beard — bottom of head */}
-      <mesh position={[0, -0.18, 0.18]} scale={[0.85, 0.55, 0.7]}>
-        <sphereGeometry args={[0.42, 24, 24]} />
+
+      {/* hair cap — back + top only, well clear of face */}
+      <mesh position={[0, 0.16, -0.12]} scale={[1.0, 0.75, 0.9]}>
+        <sphereGeometry args={[0.46, 32, 32]} />
         <meshToonMaterial color={HAIR} />
       </mesh>
 
-      {/* face billboard — user photo on a slight curved plane */}
-      <mesh position={[0, 0.02, 0.35]}>
-        <planeGeometry args={[0.62, 0.62, 4, 4]} />
-        <meshBasicMaterial map={tex} transparent toneMapped={false} />
+      {/* face billboard — pushed clearly in front of skull */}
+      <mesh position={[0, 0.0, 0.42]} renderOrder={2}>
+        <planeGeometry args={[0.7, 0.7]} />
+        <meshBasicMaterial
+          map={tex}
+          transparent
+          toneMapped={false}
+          depthWrite={false}
+        />
       </mesh>
 
       {/* ears */}
-      <mesh position={[-0.4, -0.02, 0]} rotation={[0, 0, -0.2]}>
+      <mesh position={[-0.42, -0.04, 0]} rotation={[0, 0, -0.2]}>
         <sphereGeometry args={[0.08, 12, 12]} />
         <meshToonMaterial color={SKIN_DARK} />
       </mesh>
-      <mesh position={[0.4, -0.02, 0]} rotation={[0, 0, 0.2]}>
+      <mesh position={[0.42, -0.04, 0]} rotation={[0, 0, 0.2]}>
         <sphereGeometry args={[0.08, 12, 12]} />
         <meshToonMaterial color={SKIN_DARK} />
       </mesh>
 
       {/* neck */}
-      <mesh position={[0, -0.45, 0]}>
+      <mesh position={[0, -0.46, 0]}>
         <cylinderGeometry args={[0.13, 0.16, 0.2, 16]} />
         <meshToonMaterial color={SKIN_DARK} />
       </mesh>
@@ -311,21 +307,20 @@ function Avatar({ action }: { action: Action }) {
 export default function CartoonAvatar({ action }: { action: Action }) {
   return (
     <Canvas
-      camera={{ position: [0, 1.2, 3.6], fov: 38 }}
+      camera={{ position: [0, 0.9, 4.2], fov: 32 }}
       dpr={[1, 2]}
-      shadows
       gl={{ antialias: true, alpha: true }}
+      onCreated={({ camera }) => camera.lookAt(0, 0.9, 0)}
     >
       <color attach="background" args={["#0c0c0d"]} />
-      <ambientLight intensity={0.55} />
+      <ambientLight intensity={0.65} />
       <directionalLight
         position={[3, 5, 4]}
-        intensity={1.2}
+        intensity={1.0}
         color="#ffffff"
-        castShadow
       />
-      <directionalLight position={[-3, 3, -2]} intensity={0.45} color={ACCENT} />
-      <hemisphereLight args={["#1a3550", "#0a0a0d", 0.4]} />
+      <directionalLight position={[-3, 3, -2]} intensity={0.4} color={ACCENT} />
+      <hemisphereLight args={["#1a3550", "#0a0a0d", 0.45]} />
 
       <Suspense fallback={null}>
         <Avatar action={action} />
