@@ -2,10 +2,22 @@
 
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import type { Action } from "./CartoonAvatar";
 
-const Avatar3D = dynamic(() => import("./Avatar3D"), { ssr: false });
+const CartoonAvatar = dynamic(() => import("./CartoonAvatar"), { ssr: false });
+
+const ACTIONS: { id: Action; label: string }[] = [
+  { id: "idle", label: "Idle" },
+  { id: "wave", label: "Wave" },
+  { id: "code", label: "Code" },
+  { id: "thumb", label: "Ship it" },
+  { id: "dance", label: "Friday" },
+];
 
 export default function Hero() {
+  const [action, setAction] = useState<Action>("idle");
+
   return (
     <section className="relative min-h-[100svh] overflow-hidden">
       {/* dot grid backdrop */}
@@ -87,20 +99,40 @@ export default function Hero() {
           transition={{ duration: 0.9, delay: 0.15, ease: [0.2, 0.7, 0.2, 1] }}
           className="relative z-10 col-span-12 lg:col-span-5"
         >
-          <figure className="relative mx-auto aspect-square w-full max-w-[460px] lg:ml-auto">
+          <figure className="relative mx-auto w-full max-w-[460px] lg:ml-auto">
             {/* mint glow halo */}
-            <div className="pointer-events-none absolute -inset-8 rounded-full bg-emerald-300/10 blur-3xl" />
+            <div className="pointer-events-none absolute -inset-6 rounded-[44px] bg-emerald-300/10 blur-3xl" />
             {/* frame */}
-            <div className="absolute inset-0 rounded-[36px] border border-[#1f1f22] bg-[#0c0c0d]" />
-            <div className="absolute inset-0 overflow-hidden rounded-[36px]">
-              <Avatar3D />
+            <div className="relative aspect-[4/5] w-full">
+              <div className="absolute inset-0 rounded-[36px] border border-[#1f1f22] bg-[#0c0c0d]" />
+              <div className="absolute inset-0 overflow-hidden rounded-[36px]">
+                <CartoonAvatar action={action} />
+              </div>
+              <div className="pointer-events-none absolute inset-px rounded-[35px] ring-1 ring-inset ring-white/[0.06]" />
+              {/* Action chip bar */}
+              <div className="absolute inset-x-3 bottom-3 flex flex-wrap justify-center gap-1.5 rounded-2xl border border-[#1f1f22] bg-black/55 p-1.5 backdrop-blur-md">
+                {ACTIONS.map((a) => {
+                  const active = a.id === action;
+                  return (
+                    <button
+                      key={a.id}
+                      onClick={() => setAction(a.id)}
+                      className={`rounded-xl px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] transition ${
+                        active
+                          ? "bg-emerald-300 text-zinc-950"
+                          : "text-zinc-400 hover:bg-white/5 hover:text-zinc-100"
+                      }`}
+                    >
+                      {a.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-            <div className="pointer-events-none absolute inset-px rounded-[35px] ring-1 ring-inset ring-white/[0.06]" />
-            <div className="pointer-events-none absolute inset-0 rounded-[36px] [mask-image:linear-gradient(180deg,transparent_0%,transparent_70%,black_100%)] bg-gradient-to-b from-transparent to-black/80" />
 
-            <figcaption className="absolute -bottom-6 left-0 right-0 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">
-              <span>fig. 01</span>
-              <span>Nandu — Bengaluru, IN</span>
+            <figcaption className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">
+              <span>fig. 01 · cartoon-nandu v1</span>
+              <span>tap an action ↑</span>
             </figcaption>
           </figure>
         </motion.div>

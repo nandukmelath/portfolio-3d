@@ -56,11 +56,36 @@ def to_duotone(img: Image.Image, dark=(10, 12, 16), light=(110, 231, 183)) -> Im
     return duo
 
 
+def crop_face(img: Image.Image) -> Image.Image:
+    """Tight crop around the face using the alpha bbox + heuristic top fraction.
+
+    Headshot composition: head at top, shoulders below. Take the alpha bbox
+    (subject mask) then keep the top ~55% vertically (face + a sliver of neck),
+    centred horizontally on the bbox.
+    """
+    rgba = img.convert("RGBA")
+    bbox = rgba.getbbox()
+    if not bbox:
+        return rgba
+    x0, y0, x1, y1 = bbox
+    h = y1 - y0
+    w = x1 - x0
+    # face = top 0.58 of the cutout
+    face_h = int(h * 0.58)
+    cx = (x0 + x1) // 2
+    # square crop centred on cx, height = face_h
+    half = face_h // 2
+    fx0 = max(0, cx - half)
+    fx1 = fx0 + face_h
+    fy0 = y0
+    fy1 = y0 + face_h
+    return rgba.crop((fx0, fy0, fx1, fy1))
+
+
 def main() -> None:
     img = Image.open(SRC).convert("RGB")
     cut = remove_bg(img)
 
-    # high-res clean cut
     hi = cut.copy()
     hi.thumbnail((900, 900), Image.LANCZOS)
     hi.save(DST / "portrait.png", optimize=True)
@@ -73,8 +98,12 @@ def main() -> None:
     duo.thumbnail((900, 900), Image.LANCZOS)
     duo.save(DST / "portrait-duotone.png", optimize=True)
 
+    face = crop_face(cut)
+    face.thumbnail((512, 512), Image.LANCZOS)
+    face.save(DST / "face.png", optimize=True)
+
     print("wrote:")
-    for p in ("portrait.png", "portrait-low.png", "portrait-duotone.png"):
+    for p in ("portrait.png", "portrait-low.png", "portrait-duotone.png", "face.png"):
         f = DST / p
         print(f"  {f.name}  {f.stat().st_size // 1024}KB")
 
