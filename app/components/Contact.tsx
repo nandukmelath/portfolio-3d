@@ -26,16 +26,16 @@ export default function Contact() {
           className="col-span-12 lg:col-span-9"
         >
           <h2 className="max-w-2xl font-serif text-4xl leading-[1.1] tracking-tight text-zinc-50 md:text-5xl">
-            Looking for someone who can{" "}
-            <em className="not-italic text-emerald-200/90">
-              own a Fabric build end-to-end?
+            Need someone who can{" "}
+            <em className="not-italic text-emerald-200/95">
+              own a Fabric build end-to-end
             </em>{" "}
-            That&apos;s the job.
+            and bring an agentic instinct with them?
           </h2>
           <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-zinc-400">
-            Currently open to Microsoft Fabric DE, Analytics Engineer, and
-            Azure DE roles in Bengaluru or fully remote. Notice ≤ 30 days. India
-            and international onsite client travel is fine.
+            Open to Microsoft Fabric DE, Analytics Engineer, and Azure DE roles
+            in Bengaluru or fully remote. Notice ≤ 30 days. India and
+            international onsite client travel is fine.
           </p>
 
           <ul className="mt-12 divide-y divide-[#1f1f22] border-y border-[#1f1f22]">

@@ -24,27 +24,39 @@ export default function About() {
           className="col-span-12 lg:col-span-9"
         >
           <p className="font-serif text-2xl leading-[1.4] tracking-tight text-zinc-100 md:text-[28px] md:leading-[1.35]">
-            I&apos;ve spent the last two years inside global banking and asset
-            management estates — the kind where an Alteryx workflow is older
-            than the analyst running it. My job is to rebuild that on Microsoft
-            Fabric without breaking the report it&apos;s currently feeding.
+            Two jobs, one mind. Day one is a Fabric Lakehouse on OneLake for a
+            bank that still ran on Alteryx last quarter. Day two is a
+            multi-agent system I built on a Saturday because I wanted to see if
+            five small agents could outrun one big prompt.
           </p>
 
           <div className="mt-10 grid grid-cols-1 gap-x-12 gap-y-6 text-[15px] leading-relaxed text-zinc-400 md:grid-cols-2">
-            <p>
-              At TCS I led an Alteryx → Fabric migration end-to-end — POC
-              through production, sole owner. Bronze, Silver, Gold in OneLake;
-              PySpark notebooks processing 10M+ rows a day; Power BI semantic
-              models the C-suite can read without a briefing. ~£70K annual
-              savings, pipeline cycle cut from three days to under six hours.
-            </p>
-            <p>
-              Outside work I build multi-agent AI systems. The most useful one,{" "}
-              <span className="text-zinc-200">Kavach</span>, is a DPDP
-              compliance co-pilot that hands tasks between specialist agents and
-              a reviewer agent. The agentic lens shows up in how I design data
-              platforms — tools, contracts, handoffs.
-            </p>
+            <div>
+              <div className="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-emerald-300">
+                / day job
+              </div>
+              <p>
+                Microsoft Fabric Data Engineer at TCS. Led an Alteryx → Fabric
+                migration end-to-end — POC through production, sole owner.
+                Bronze / Silver / Gold in OneLake; PySpark notebooks crunching
+                10M+ rows a day; Power BI semantic models the C-suite can read
+                without a briefing. ~£70K annual savings, three-day pipelines
+                down to under six hours.
+              </p>
+            </div>
+            <div>
+              <div className="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-emerald-300">
+                / night job (for fun)
+              </div>
+              <p>
+                I build multi-agent AI systems on the side.{" "}
+                <span className="text-zinc-200">Kavach</span>, a DPDP compliance
+                co-pilot, hands tasks between specialist agents and a reviewer
+                agent before anything ships. The same agentic lens — tools,
+                contracts, handoffs — shows up in how I design modern data
+                platforms.
+              </p>
+            </div>
           </div>
 
           <dl className="mt-12 grid grid-cols-2 gap-y-3 border-t border-[#1f1f22] pt-6 font-mono text-[12px] md:grid-cols-4">
